@@ -23,3 +23,12 @@ class Database:
         self.connection.commit()
         cursor.close()
     
+    async def get_category(self) -> list:
+        cursor = self.connection.cursor()
+        get = "SELECT nome FROM categorias"
+        cursor.execute(get)
+        categories = cursor.fetchall()
+        cursor.close()
+        
+        return categories
+        

@@ -34,7 +34,12 @@ async def insert_category(ctx, category):
     except IntegrityError:
         await ctx.send("categoria já existe!")
 
-  
-    
+@bot.command(name="listar_categorias")
+async def get_categories(ctx):
+    categories = await database.get_category()
+    response = f"olá {ctx.author.name}, aqui estão as categorias:\n"
+    response += "\n".join([category[0] for category in categories])
+    await ctx.send(response)
+
 token = os.getenv("TOKEN")
 bot.run(token)
