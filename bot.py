@@ -16,7 +16,7 @@ database = Database()
 
 @bot.event
 async def on_ready():
-    database.create_table_category()
+    await database.create_tables()
     print(f"Tudo ok! Estou conectado como {bot.user}")
 
 @bot.command(name="ping")
