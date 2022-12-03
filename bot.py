@@ -41,5 +41,11 @@ async def get_categories(ctx):
     response += "\n".join([category[0] for category in categories])
     await ctx.send(response)
 
+@bot.command(name="remover_categoria")
+async def get_categories(ctx, category):
+    await database.remove_category(category)
+    
+    await ctx.send(f"categoria {category} removida")
+
 token = os.getenv("TOKEN")
 bot.run(token)

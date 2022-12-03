@@ -32,3 +32,9 @@ class Database:
         
         return categories
         
+    async def remove_category(self, category) -> None:
+        cursor = self.connection.cursor()
+        remove = "DELETE FROM categorias WHERE nome = ?"
+        cursor.execute(remove, (category,))
+        self.connection.commit()
+        cursor.close()
