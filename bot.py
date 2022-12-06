@@ -47,5 +47,17 @@ async def get_categories(ctx, category):
     
     await ctx.send(f"categoria {category} removida")
 
+@bot.command(name="inserir_receita")
+async def insert_recipe(ctx, name, link, category):
+    try:
+        response = "mais uma delícia inserida"
+        await database.create_recipe(name, link, category)
+        await ctx.send(response)
+    except IndexError:
+        await ctx.send("categoria não encontrada")
+    except IntegrityError:
+        await ctx.send(f"receita já existe na categoria {category}")
+    
+
 token = os.getenv("TOKEN")
 bot.run(token)
