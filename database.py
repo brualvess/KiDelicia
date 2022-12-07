@@ -7,7 +7,17 @@ class Database:
     def enable_foreign_keys(self):
         cursor = self.connection.cursor()
         cursor.execute("PRAGMA foreign_keys = ON")
-        
+
+    async def get_categoryId(self, category):
+        cursor = self.connection.cursor()
+        get_categoryId = "SELECT id FROM categorias WHERE nome = ?"
+        cursor.execute(get_categoryId, (category,))
+        id = cursor.fetchall()
+        id = id[0][0]
+        cursor.close()
+        return id
+
+
     async def _create_table_category(self) -> None:
         cursor = self.connection.cursor()
         table = """ CREATE TABLE IF NOT EXISTS categorias (
@@ -46,7 +56,7 @@ class Database:
         self.connection.commit()
         cursor.close()
     
-    async def get_category(self) -> list:
+    async def list_category(self) -> list:
         cursor = self.connection.cursor()
         get = "SELECT nome FROM categorias"
         cursor.execute(get)
@@ -67,10 +77,17 @@ class Database:
         insert_recipe = """ INSERT INTO receitas (nome, link, categoria_id)
                         VALUES (?,?,?)
                     """
-        get_categoryId = f"SELECT id FROM categorias WHERE nome = ?"
-        cursor.execute(get_categoryId, (category,))
-        categoryId = cursor.fetchall()
-        categoryId = categoryId[0][0]
+        categoryId = await self.get_categoryId(category)
         cursor.execute(insert_recipe, (name, link, categoryId))
         self.connection.commit()
         cursor.close() 
+
+    async def list_recipes_category(self, category) -> list:
+        cursor = self.connection.cursor()
+        id = await self.get_categoryId(category)
+        get = "SELECT nome FROM receitas WHERE categoria_id = ?"
+        cursor.execute(get, (id,))
+        recipes = cursor.fetchall()
+        cursor.close()
+        
+        return recipes

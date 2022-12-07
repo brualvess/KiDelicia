@@ -35,14 +35,14 @@ async def insert_category(ctx, category):
         await ctx.send("categoria já existe!")
 
 @bot.command(name="listar_categorias")
-async def get_categories(ctx):
-    categories = await database.get_category()
+async def list_categories(ctx):
+    categories = await database.list_category()
     response = f"olá {ctx.author.name}, aqui estão as categorias:\n"
     response += "\n".join([category[0] for category in categories])
     await ctx.send(response)
 
 @bot.command(name="remover_categoria")
-async def get_categories(ctx, category):
+async def remove_categories(ctx, category):
     await database.remove_category(category)
     
     await ctx.send(f"categoria {category} removida")
@@ -58,6 +58,13 @@ async def insert_recipe(ctx, name, link, category):
     except IntegrityError:
         await ctx.send(f"receita já existe na categoria {category}")
     
+
+@bot.command(name="listar_receitas")
+async def list_recipes_category(ctx, category):
+    recipes = await database.list_recipes_category(category)
+    response = "aqui estão todas as receitas:\n"
+    response += "\n".join([recipe[0] for recipe in recipes])
+    await ctx.send(response)
 
 token = os.getenv("TOKEN")
 bot.run(token)
