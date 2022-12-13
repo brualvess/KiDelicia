@@ -91,3 +91,13 @@ class Database:
         cursor.close()
         
         return recipes
+
+    async def get_recipe(self, recipe, category) -> list:
+        cursor = self.connection.cursor()
+        categoryId = await self.get_categoryId(category)
+        query_recipe = """SELECT nome, link FROM  receitas WHERE nome = ? AND categoria_id = ?"""
+        cursor.execute(query_recipe, (recipe, categoryId,))
+        result = cursor.fetchall()
+        cursor.close()
+
+        return result

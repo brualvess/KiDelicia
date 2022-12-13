@@ -66,5 +66,11 @@ async def list_recipes_category(ctx, category):
     response += "\n".join([recipe[0] for recipe in recipes])
     await ctx.send(response)
 
+@bot.command(name="buscar_receita")
+async def get_recipe(ctx, recipe, category):
+    recipe_data = await database.get_recipe(recipe, category)
+    response = f"aqui está a receita **{recipe_data[0][0]}**: {recipe_data[0][1]}"
+    await ctx.send(response)
+
 token = os.getenv("TOKEN")
 bot.run(token)
