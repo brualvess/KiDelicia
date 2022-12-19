@@ -69,8 +69,12 @@ async def list_recipes_category(ctx, category):
 @bot.command(name="buscar_receita")
 async def get_recipe(ctx, recipe, category):
     recipe_data = await database.get_recipe(recipe, category)
-    response = f"aqui está a receita **{recipe_data[0][0]}**: {recipe_data[0][1]}"
-    await ctx.send(response)
+    if len(recipe_data) == 0:
+        await ctx.send(f"receita {recipe} não encontrada")
+    else:
+        response = f"aqui está a receita **{recipe_data[0][0]}**: {recipe_data[0][1]}"
+        await ctx.send(response)
+
 
 token = os.getenv("TOKEN")
 bot.run(token)
