@@ -100,4 +100,12 @@ class Database:
         result = cursor.fetchall()
         cursor.close()
 
-        return result
+        return result 
+
+    async def remove_recipe(self, recipe, category):
+        cursor = self.connection.cursor()
+        categoryId = await self.get_categoryId(category)
+        remove = "DELETE FROM receitas WHERE nome = ? and categoria_id = ?"
+        cursor.execute(remove, (recipe, categoryId,))
+        self.connection.commit()
+        cursor.close()

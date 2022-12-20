@@ -75,6 +75,11 @@ async def get_recipe(ctx, recipe, category):
         response = f"aqui está a receita **{recipe_data[0][0]}**: {recipe_data[0][1]}"
         await ctx.send(response)
 
+@bot.command(name="remover_receita")
+async def remove_recipe(ctx, recipe, category):
+    await database.remove_recipe(recipe, category)
+
+    await ctx.send(f"receita {recipe} removida")
 
 token = os.getenv("TOKEN")
 bot.run(token)
