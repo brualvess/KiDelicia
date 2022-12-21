@@ -42,10 +42,21 @@ class Database:
         cursor.execute(table)
         self.connection.commit()
         cursor.close()
+
+    async def _create_table_ingredients(self) -> None:
+        cursor = self.connection.cursor()
+        table = """CREATE TABLE IF NOT EXISTS ingredientes(
+                   id INTEGER PRIMARY KEY,
+                   nome VARCHAR(256) NOT NULL
+                )"""
+        cursor.execute(table)
+        self.connection.commit()
+        cursor.close()
     
     async def create_tables(self) -> None:
         await self._create_table_category()
         await self._create_table_recipe()
+        await self._create_table_ingredients()
 
     async def create_category(self, category) -> None:
         cursor = self.connection.cursor()
